@@ -1858,9 +1858,19 @@ License: MIT
 	{
 		if (typeof obj !== 'object' || obj === null)
 			return obj;
+
 		var cpy = Array.isArray(obj) ? [] : {};
-		for (var key in obj)
-			cpy[key] = copy(obj[key]);
+		for (var key in obj) {
+			const descriptor = {
+				__proto__: null,
+				value: obj[key],
+				writable: true,
+				enumerable: true,
+				configurable: true,
+			}
+			Object.defineProperty(cpy, key, descriptor)
+		}
+
 		return cpy;
 	}
 
